@@ -1,0 +1,37 @@
+<script>
+  jQuery(document).ready(function() {    
+    jQuery('#check-all').on('change', function(){ 
+      var checkboxes = $('input:checkbox');
+      var isChecked = this.checked;
+
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox') {
+          checkboxes[i].checked = isChecked;
+        }
+      }
+      enableDelete();
+    });
+
+    jQuery('.check_individual').on('change', function(){ 
+      var checkboxes = $('input:checkbox');
+      var checked_checkboxes = $('input:checked');
+      var check_all = $('#check-all');
+
+      if(this.checked === false){
+        check_all[0].checked = false
+      }
+      else { if(checked_checkboxes.length >= checkboxes.length -1){ 
+        check_all[0].checked = true
+      }}
+      enableDelete(); 
+    });
+  })
+
+  function enableDelete(){
+    elem = document.getElementById('delete-multi-btn');
+    checked_checkboxes = $('input:checked');  
+    
+    if(checked_checkboxes.length > 0) { elem.disabled = false;}
+    else { elem.disabled = true; }
+  }
+</script>

@@ -1,0 +1,79 @@
+<div class="container mtop">
+  
+  <div class="model-filter pull-left">
+    <%= form_tag users_path, :method => :get do %>
+      <div class="form-control">
+        <%= select_tag :filter_param, options_for_select(user_filters), :selected => params[:filter_param], :class => "span2" %>      
+        <%= text_field_tag :filter_value, params[:filter_value], :class => "span2" %>
+        <%= submit_tag "Filter", :class => "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="pull-right span4">
+    <a id="create-user-popup" class="modal-box btn btn-primary" data-backdrop="static" data-toggle="modal" href="#create_user"> Create new user</a>
+
+    <%= form_tag destroy_multiple_users_path, :method => :delete, :class => "delete_multiple_users pull-right" do %>
+      <%= button_to_function('Delete selected', "delete_data()", :class => "btn btn-danger", :id => "delete-multi-btn", :confirm => "Are you sure you want to delete the selected users?", :disabled => "disabled") %>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @users.present? %>
+      <table class ="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="check-all" /></th>            
+            <th>Username</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tbody>
+              <tr>
+                <td><%= check_box_tag "user_ids[]", user.id, false, :class => "check_individual delete_user" %></td>
+                <td><%= user.username %></td>
+                <td><%= user.first_name %></td>
+                <td><%= user.last_name %></td>
+                <td><%= user.email %></td>
+                <td><%= user.roles.collect{ |r| r.name }.to_sentence %></td>
+                <% unless user.id == current_user.id %>
+                  <td><a id="edit-user-popup" class="modal-box" data-backdrop="static" data-toggle="modal" href=<%= "#edit_user_#{user.id}" %>>edit</a></td>
+                  <%= render :partial => "edit_form", :locals => { :user => user } %>
+                  <td><%= link_to('delete', user_path(:id => user.id, :user_ids => [user.id]), :method => 'delete', :confirm => "Are you sure you want to delete the user?") %></td>
+                <% end %>
+              </tr>
+            </tbody>
+          <% end %>
+      </table>
+      <%= will_paginate @users %>
+    <% else %>
+      <p>There are no users data stored.</p>
+    <% end %>
+  </div>
+  
+</div>
+
+<%= render :partial => "new_form" %>
+<%= render :partial => "shared/check_box_select" %>
+
+<script>
+  function delete_data(){
+    var checked_items = jQuery('.delete_user:checked');
+    
+    var form = $(".delete_multiple_users")
+    $.each(checked_items, function(index, item) { 
+      var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "user_ids[]").val(item.value);
+      form.append($(input));
+    })
+    form.submit();
+  }
+</script>

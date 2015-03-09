@@ -1,0 +1,33 @@
+<% if @imports.present? %>
+  <table class ="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th width="20">File name</th>          
+        <th width="20">Uploaded at</th>
+        <th width="20">Uploaded by</th>
+        <th width="30">Status</th>
+        <th width="20">Error message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @imports.each do |import| %>
+        <tbody>
+          <tr>
+            <td><%= import.file_name %></td>
+            <td><%= import.uploaded_at %></td>
+            <td><%= import.user.username %></td>
+            <td>
+              <span class="<%= "tag #{Importer::STATUS.invert[import.status]}" %>">
+                <%= Importer::STATUS.invert[import.status].to_s.tr("_", " ").capitalize %>
+              </span>
+            </td>
+            <td><%= import.error_msg ? import.error_msg.to_s : "-" %></td>
+          </tr>
+        </tbody>
+      <% end %>
+  </table>
+  <%= will_paginate @imports %>
+<% else %>
+  <br><br><br>
+  <p>No import jobs so far.</p>
+<% end %>

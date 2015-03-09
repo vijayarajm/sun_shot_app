@@ -1,0 +1,26 @@
+<div class="modal hide in" id="<%= "edit_location_#{location.id}" %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id ="ytr">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h6 class="modal-title" id="myModalLabel">Edit Location</h6>
+      </div>            
+      
+      <div class="modal-body" id="utility_body">  
+        <%= form_for location, :url =>  location_path(location.id), :method => :put, :html => { :class => "hide" } do |form| %>
+          <div class="span6">
+            <%= form.text_field :unique_id, { :class => "span3 select2 pull-left required", :placeholder => "Unique ID", :required => true } %>
+            <%= form.text_field :name, { :class => "span3 select2 pull-right", :placeholder => "Name", :required => true } %><br>
+            <%= form.text_field :address, { :class => "span3 select2", :placeholder => "Address", :required => true } %> 
+            <%= form.text_field :maximum_output, { :class => "span3 select2 pull-right", :placeholder => "Maximum Output", :required => true } %><br>
+            <%= form.text_field :lat, { :class => "span3 select2", :placeholder => "Latitude", :required => true } %>
+            <%= form.text_field :long, { :class => "span3 select2 pull-right", :placeholder => "Longitude", :required => true } %><br><br>
+            <%= form.submit "Update", :class => "span2 btn btn-small btn-primary" %> 
+          </div>
+        <% end %> 
+      </div>
+
+    </div>
+  </div>
+</div>

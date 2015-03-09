@@ -1,0 +1,25 @@
+<div class="modal hide in" id="<%= "edit_user_#{user.id}" %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id ="ytr">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h6 class="modal-title" id="myModalLabel">Edit user</h6>
+      </div>            
+      
+      <div class="modal-body" id="utility_body">  
+        <%= form_for user, :url => user_path(user.id), :method => :put, :html => { :class => "hide" } do |form| %>
+          <div class="span6">
+            <%= form.text_field :username, { :class => "span3 select2 pull-left", :placeholder => "Username", :required => true } %>
+            <%= form.text_field :first_name, { :class => "span3 select2 pull-right", :placeholder => "First name", :required => true } %><br>
+            <%= form.text_field :last_name, { :class => "span3 select2 pull-left", :placeholder => "Last Name", :required => true } %> 
+            <%= form.text_field :email, { :class => "span3 select2 pull-right", :placeholder => "Email", :required => true } %><br>
+            <%= form.password_field :password, { :class => "span3 select2 pull-left", :placeholder => "Password", :required => true } %> <br>
+            <%= form.submit "Update", :class => "span2 btn btn-small btn-primary" %> 
+          </div>
+        <% end %> 
+      </div>
+
+    </div>
+  </div>
+</div>

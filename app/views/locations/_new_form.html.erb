@@ -1,0 +1,27 @@
+<div class="modal hide in" id="create_location" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" id ="ytr">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h6 class="modal-title" id="myModalLabel">Create Location</h6>
+      </div>            
+      
+      <div class="modal-body" id="utility_body">  
+        <%= form_tag :url => locations_path, :method => :post, :html => { :class => "hide", :id => "lead_status_edit" } do |form| %>
+          
+          <div class="span6">
+            <%= text_field_tag "location[unique_id]", "", { :class => "span3 select2 pull-left", :placeholder => "Unique ID", :required => true } %>
+            <%= text_field_tag "location[name]", "", { :class => "span3 select2 pull-right", :placeholder => "Name", :required => true } %><br>
+            <%= text_field_tag "location[address]", "",{ :class => "span3 select2", :placeholder => "Address", :required => true } %>            
+            <%= text_field_tag "location[maximum_output]", "", { :class => "span3 select2 pull-right", :placeholder => "Maximum Output", :required => true } %><br>
+            <%= text_field_tag "location[lat]", "", { :class => "span3 select2", :placeholder => "Latitude", :required => true } %>
+            <%= text_field_tag "location[long]", "", { :class => "span3 select2 pull-right", :placeholder => "Longitude", :required => true } %><br><br>
+          
+            <%= submit_tag "Create", :class => "span2 btn btn-small btn-primary" %> 
+          </div>
+        <% end %> 
+      </div>
+    </div>
+  </div>
+  </div>

@@ -1,0 +1,41 @@
+<div class="container mtop">
+  <div>
+    <div class="pull-left">
+      <%= form_tag({action: :create}, multipart: true) do %>
+        <div class="form-control">
+          <label>Choose a zip file</label>
+          <%= file_field_tag 'CSV', accept: 'zip', :required => true, :class => "span3" %>
+          <%= submit_tag 'Import', :class => 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="pull-right">
+      <input type="button" class="btn btn-primary" value="Refresh table" onClick="refreshStatus()">
+    </div>
+  </div>
+
+  
+  <div class="import_container">
+    <br><br><br>
+    <%= render :partial => "import_list" %>
+  </div>  
+</div>
+
+<script>
+  $(document).ready(function() {
+    // run the first time; all subsequent calls will take care of themselves
+    setTimeout(refreshStatus, 30000);
+  });
+
+  function refreshStatus(){
+    jQuery.ajax({
+          url: "/importers/status",
+          type: "GET",
+          success: function(data){
+             jQuery(".import_container").html(data);
+          }
+        });  
+    setTimeout(refreshStatus, 30000);
+  }
+</script>

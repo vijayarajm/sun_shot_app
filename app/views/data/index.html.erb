@@ -1,0 +1,66 @@
+<div class="container mtop">
+  
+  <div class="pull-right span4">
+    <a id="create-location-popup" class="modal-box btn btn-primary" data-backdrop="static" data-toggle="modal" href="#create_location_data"> Create location data</a>
+
+    <%= form_tag destroy_multiple_location_data_path, :method => :delete, :class => "delete_multiple_location_data pull-right" do %>
+      <%= button_to_function('Delete selected', "delete_data()", :class => "btn btn-danger", :id => "delete-multi-btn", :confirm => "Are you sure you want to delete the selected location data?", :disabled => "disabled") %>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @location_data.present? %>
+      <table class ="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="check-all" /></th>
+            <th>Location Unique ID</th>
+            <th>Date time (UTC)</th>
+            <th>Instantaneous power (watts)</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @location_data.each do |datum| %>
+            <tbody>
+              <tr>
+                <td><%= check_box_tag "location_data_ids[]", datum.id, false, :class => "delete_location_data check_individual" %></td>
+                <td><%= datum.location.unique_id %></td>
+                <td><%= Time.at datum.date_time %></td>                
+                <td><%= datum.instantaneous_power %></td>
+                
+                <td><a id="edit-location-popup" class="modal-box" data-backdrop="static" data-toggle="modal" href=<%= "#edit_location_data_#{datum.id}" %>>edit</a></td>
+                <%= render :partial => "edit_form", :locals => { :datum => datum } %>
+                <td><%= link_to('delete', location_datum_path(params[:location_id], datum.id, :location_data_ids => [datum.id]), :method => 'delete', :confirm => "Are you sure you want to delete the location data?") %></td>
+              </tr>
+            </tbody>
+          <% end %>
+      </table>
+      <%= will_paginate @location_data %>
+    <% else %>
+      <p>There are no location data stored.</p>
+    <% end %>
+  </div>
+  
+</div>
+
+<%= render :partial => "new_form" %>
+
+<%= render :partial => "shared/check_box_select" %>
+
+<script>
+  function delete_data(){
+    var checked_items = jQuery('.delete_location_data:checked');
+    
+    var form = $(".delete_multiple_location_data")
+    $.each(checked_items, function(index, item) { 
+      var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "location_data_ids[]").val(item.value);
+      form.append($(input));
+    })
+    form.submit();
+  }
+</script>
+
