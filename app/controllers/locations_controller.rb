@@ -1,5 +1,18 @@
 class LocationsController < ApplicationController
 
+  # index: GET /locations - renders the locations page. Lists all locations
+  # 
+  # create: POST /locations - creates a new location record.
+  # 
+  # update: PUT /locations/{id} - updates existing location with the given id.
+  # 
+  # destroy: DELETE /locations - deletes existing locations given the location ids.
+  # 
+  # show: GET /location/{id} - renders location_data list of the location with the given id.
+  # 
+  # Uses raw mysql query to delete corresponding location_data values to reduce the number of 
+  # queries fired. Else one delete query will be fired for each location_data row.
+
   before_filter :deny_access
   
   def new

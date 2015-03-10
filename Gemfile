@@ -19,6 +19,8 @@ gem 'bootstrap-will_paginate', '0.0.6'
 gem 'rubyzip', '>= 1.0.0'
 gem 'zip-zip'
 
+gem 'tomdoc', '~> 0.2.5'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

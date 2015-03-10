@@ -2,6 +2,21 @@ class DataController < ApplicationController
 
   before_filter :deny_access, :check_for_location
   
+  # 'deny_access' to check if users are logged in.
+  # 
+  # 'scoper' identifies the location with the given ID
+  # 
+  # 'check_for_location' to check if location_id exists.
+  # 
+  # create: POST /locations/{location_id}/data - adds a new location data record for the given location.
+  # 
+  # update: PUT /locations/{location_id}/data/{id} - update existing location data.
+  # 
+  # index: GET /locations/{id}/data - renders locations data page. Lists all location_data of 
+  # the location with given id with pagination in a table
+  # 
+  # destroy: DELETE /locations/{location_id}/data - deletes given location data
+
   def new
     @location_data = scoper.data.new
   end
@@ -13,7 +28,8 @@ class DataController < ApplicationController
       flash[:notice] = "Location data created!"
       redirect_to location_data_path
     else
-
+      flash[:notice] = @location_data.errors.full_messages.to_sentence
+      redirect_to location_data_path
     end
   end
 
@@ -28,26 +44,14 @@ class DataController < ApplicationController
       flash[:notice] = "Location data updated!"
       redirect_to location_data_path
     else
-
+      flash[:notice] = @location_data.errors.full_messages.to_sentence
+      redirect_to location_data_path
     end
   end
 
   def index    
     @location_data = scoper.data.paginate(:page => params[:page], :per_page => 30)
   end
-
-  def show
-    
-  end
-
-  # def destroy
-  #   location_datum = scoper.data.find_by_id(params[:id])
-  #   p location_datum
-  #   location_datum.destroy
-    
-  #   flash[:notice] = "Location datas destroyed!"
-  #   redirect_to location_data_path
-  # end
 
   def destroy
     locations = scoper.data.where(:id => params[:location_data_ids])

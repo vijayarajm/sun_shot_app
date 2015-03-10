@@ -2,8 +2,9 @@ namespace :populate_default_data do
 
   desc "Adding admin role and default admin user"
   task :add_role_and_admin_user => :environment do
-    Role.create(:name => "Admin", :description => "Has all privileges")
-    User.create(user_data)
+    role = Role.create(:name => "Admin", :description => "Has all privileges")
+    user = User.create(user_data)
+    user.roles = [role]
   end  
 
   def user_data

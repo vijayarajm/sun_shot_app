@@ -1,11 +1,16 @@
 <div class="container mtop">
+  
+  <div class="progress progress-striped-custom hide" style="width: 100%; height: 20px">
+      <span class="sr-only">P</span>
+  </div>
+
   <div>
     <div class="pull-left">
-      <%= form_tag({action: :create}, multipart: true) do %>
+      <%= form_tag({action: :create}, { multipart: true, :id => "import_form" }) do %>
         <div class="form-control">
           <label>Choose a zip file</label>
-          <%= file_field_tag 'CSV', accept: 'zip', :required => true, :class => "span3" %>
-          <%= submit_tag 'Import', :class => 'btn btn-primary' %>
+          <%= file_field_tag 'ZIP', accept: 'zip', :required => true, :class => "span3" %>
+          <%= submit_tag 'Import', :class => 'btn btn-primary', :id => "import_btn", "data-loading-text" => "Please wait..." %>
         </div>
       <% end %>
     </div>
@@ -38,4 +43,9 @@
         });  
     setTimeout(refreshStatus, 30000);
   }
+
+  jQuery('#import_form').submit(function () {
+    jQuery(".progress-striped-custom").show();
+    jQuery("#import_btn").button('loading');
+  });
 </script>

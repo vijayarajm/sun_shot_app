@@ -1,5 +1,7 @@
 module LocationsHelper
   
+  # Helper method to build location filter options
+
   def location_filters
     [
       ["Unique ID is", :unique_id],

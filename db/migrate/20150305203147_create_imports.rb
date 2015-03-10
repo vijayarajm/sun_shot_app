@@ -3,6 +3,8 @@ class CreateImports < ActiveRecord::Migration
     create_table :importers do |t|
       t.integer :status
       t.string :file_name
+      t.string :directory_name
+      t.text :error_msg
       t.datetime :uploaded_at
       t.integer :user_id
 

@@ -3,6 +3,16 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   protect_from_forgery
   
+  # Uses Authlogic to manage user sessions.
+  # 
+  # Methods to check for session and to set the current_user if current_user_session are available. 
+  # 
+  # 'require_no_user' used in login_controller to make sure only usrs with no session can access /login.
+  # 
+  # 'deny_access' used in all controllers which requires users to be logged in for an action to be performed.
+  # 
+  # 'store_location' and 'redirect_back_or_default' are used to support redirection in logins.
+
   def current_user_session
     return @current_user_session if defined?(@current_user_session)  
     @current_user_session = UserSession.find

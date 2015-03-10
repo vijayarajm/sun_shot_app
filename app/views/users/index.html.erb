@@ -37,7 +37,11 @@
           <% @users.each do |user| %>
             <tbody>
               <tr>
-                <td><%= check_box_tag "user_ids[]", user.id, false, :class => "check_individual delete_user" %></td>
+                <% unless current_user.username.eql?("admin") %>
+                  <td><%= check_box_tag "user_ids[]", user.id, false, :class => "check_individual delete_user" %></td>
+                <% else %>
+                  <td></td>
+                <% end %>
                 <td><%= user.username %></td>
                 <td><%= user.first_name %></td>
                 <td><%= user.last_name %></td>

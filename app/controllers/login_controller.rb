@@ -1,6 +1,10 @@
 class LoginController < ApplicationController
   before_filter :require_no_user, :only => [ :new, :create ]
   
+  # Methods to create/destroy user_sessions.
+  # 
+  # /login supports redirect param in the URL (/login?redirect=<redirect_url>)
+
   def new
     @user_session = UserSession.new
   end

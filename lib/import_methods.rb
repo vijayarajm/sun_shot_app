@@ -5,7 +5,8 @@ module ImportMethods
   DIRECTORY_NAME = "import_files"
   METADATA_FILE = "metadata.csv"
 
-
+  # add_zip
+  # 
   # This method creates a directory in the root path everytime a zip is uploaded and adds all 
   # unzipped files to it.
   # All import jobs are added to the imports table.
@@ -29,13 +30,17 @@ module ImportMethods
     end
   end
 
+  # add_import_job
+  # 
   # Creating the import job with the file name and directory name
+
   def add_import_job(file_name, directory_name, uploaded)
     Importer.create(:file_name => file_name, :directory_name => directory_name, :uploaded_at => uploaded, 
       :status => Importer::STATUS[:pending], :user_id => current_user.id)
   end
 
-
+  # import_data
+  # 
   # Starts reading the metadata.csv and the subsequent csv files.
   # This method is recursively called to check and run if there is any pending import.
 
@@ -51,7 +56,8 @@ module ImportMethods
     }    
   end
 
-
+  # read_metadata_csv
+  # 
   # Reads metadata.csv of the uploaded zip. 
   # Creates/Updates location entries in the locations table.
   # Removes location entries that are not in the metadata.csv file.
@@ -67,7 +73,7 @@ module ImportMethods
         location.update_attributes(:maximum_output => row[1], :lat => row[2], :long => row[3])
         update_status(import, :success)
       rescue Exception => e
-        update_status(import, :failed, error_msg)
+        update_status(import, :failed, e)
       end
     end
     
@@ -81,6 +87,12 @@ module ImportMethods
       location.destroy if location
     end
   end
+
+  # read_other_csvs
+  # 
+  # Reads other CSV files in the ZIP file and uploads the data.
+  # Deletes existing data and adds the new data from the file.
+  # If location not found for a CSV file, it is updated with failed status and not_found error msg.
 
   def read_other_csvs(directory_name)
     Importer.find_all_by_directory_name(directory_name).each do |import|      
@@ -98,11 +110,15 @@ module ImportMethods
             update_status(import, :success)
           end
         else
-          update_status(import, :failed, error_msg)
+          update_status(import, :failed, "Location with unique_id #{unique_id} not found")
         end
       end
     end
   end
+
+  # update_status
+  # 
+  # Updates status of import files
 
   def update_status(import, status, error_msg = nil)
     import.update_attributes(:status => Importer::STATUS[status], :error_msg => error_msg)

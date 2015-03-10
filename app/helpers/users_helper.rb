@@ -1,5 +1,7 @@
 module UsersHelper
   
+  # Helper method to build user filter options and roles
+  
   def user_filters
     [
       ["Username is", :username],

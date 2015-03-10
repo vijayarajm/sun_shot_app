@@ -1,6 +1,18 @@
 class UsersController < ApplicationController
 
+  # GET /users - render users page. Lists all users - with pagination and filters.
+  # 
+  # POST /users - adds a new user.
+  # 
+  # PUT /users/{id} - update existing user data.
+  # 
+  # DELETE /locations/{location_id}/data - deletes users with given user ids 
+  # (except the default admin - using 'default_user?'' in the before_filter)
+
+  DEFAULT_USER = "admin"
+
   before_filter :deny_access
+  before_filter :default_user?, :only => [:destroy, :destroy_multiple]
   
   def new
     @user = User.new
@@ -58,5 +70,15 @@ class UsersController < ApplicationController
     flash[:notice] = "Users deleted!"
     redirect_to users_path
   end
+
+  private
+    def default_user?
+      user = User.find_by_username(DEFAULT_USER)
+      
+      if user and params[:user_ids].include?(user.id.to_s)
+        flash[:error] = "Default (admin) user cannot be deleted!"
+        redirect_to users_path
+      end
+    end
 
 end

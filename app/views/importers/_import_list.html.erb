@@ -15,7 +15,7 @@
           <tr>
             <td><%= import.file_name %></td>
             <td><%= import.uploaded_at %></td>
-            <td><%= import.user.username %></td>
+            <td><%= import.user ? import.user.username : "N/A" %></td>
             <td>
               <span class="<%= "tag #{Importer::STATUS.invert[import.status]}" %>">
                 <%= Importer::STATUS.invert[import.status].to_s.tr("_", " ").capitalize %>
