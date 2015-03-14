@@ -6,12 +6,9 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
+gem 'foreigner'
 
 gem 'authlogic', '3.3.0'
-gem 'aws-sdk', '~> 2'
-
-gem 'will_filter', "~> 3.1.0" 
-gem 'kaminari'
 
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'

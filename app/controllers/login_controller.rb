@@ -1,5 +1,6 @@
 class LoginController < ApplicationController
   before_filter :require_no_user, :only => [ :new, :create ]
+  before_filter :check_for_blank, :only => :create
   
   # Methods to create/destroy user_sessions.
   # 
@@ -18,7 +19,7 @@ class LoginController < ApplicationController
         redirect_back_or_default home_path
       end
     else
-      flash[:error] = "Incorrect email or password!"
+      flash[:error] = "Incorrect username or password! Please check..."
       redirect_to login_path
     end 
   end
@@ -28,4 +29,12 @@ class LoginController < ApplicationController
     @user_session.destroy  
     redirect_to login_path  
   end
+
+  private
+    def check_for_blank
+      if params[:user_session][:username].blank? or params[:user_session][:password].blank?
+        flash[:error] = "Username or Password fields can't be blank!"
+        redirect_to login_path
+      end
+    end
 end

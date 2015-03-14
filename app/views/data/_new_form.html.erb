@@ -15,7 +15,7 @@
             <%= text_field_tag "datum[date_time]", "", { :class => "span3 select2", :placeholder => "Datetime", :required => true } %><br>
         
             <label>Instantaneous power (in watts)</label>
-            <%= text_field_tag "datum[instantaneous_power]", "", { :class => "span3 select2", :placeholder => "Instantaneous power", :required => true } %><br><br>
+            <%= number_field_tag "datum[instantaneous_power]", "", { :class => "span3 select2", :placeholder => "Instantaneous power", :required => true, :step => "any" } %><br><br>
           
             <%= submit_tag "Create", :class => "span2 btn btn-small btn-primary" %> 
           </div>

@@ -17,5 +17,6 @@
 
 log/*.pid
 tmp/*
+public/*
 .DS_Store
 dump.rdb

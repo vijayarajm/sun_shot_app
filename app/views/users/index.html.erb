@@ -10,7 +10,7 @@
     <% end %>
   </div>
 
-  <div class="pull-right span4">
+  <div class="pull-right span3">
     <a id="create-user-popup" class="modal-box btn btn-primary" data-backdrop="static" data-toggle="modal" href="#create_user"> Create new user</a>
 
     <%= form_tag destroy_multiple_users_path, :method => :delete, :class => "delete_multiple_users pull-right" do %>
@@ -18,12 +18,18 @@
     <% end %>
   </div>
 
-  <div>
+
+  <div class="table-responsive">
+    <br><br><br><br><br>
     <% if @users.present? %>
       <table class ="table table-striped table-hover">
         <thead>
           <tr>
-            <th><input type="checkbox" id="check-all" /></th>            
+            <% if @users.count > 1 %>
+              <th><input type="checkbox" id="check-all" /></th>
+            <% else %>
+              <th><input type="checkbox" id="check-all" disabled="disabled" /></th>
+            <% end %>
             <th>Username</th>
             <th>First name</th>
             <th>Last name</th>
@@ -37,7 +43,7 @@
           <% @users.each do |user| %>
             <tbody>
               <tr>
-                <% unless current_user.username.eql?("admin") %>
+                <% unless user.username.eql?("admin") %>
                   <td><%= check_box_tag "user_ids[]", user.id, false, :class => "check_individual delete_user" %></td>
                 <% else %>
                   <td></td>
@@ -50,7 +56,7 @@
                 <% unless user.id == current_user.id %>
                   <td><a id="edit-user-popup" class="modal-box" data-backdrop="static" data-toggle="modal" href=<%= "#edit_user_#{user.id}" %>>edit</a></td>
                   <%= render :partial => "edit_form", :locals => { :user => user } %>
-                  <td><%= link_to('delete', user_path(:id => user.id, :user_ids => [user.id]), :method => 'delete', :confirm => "Are you sure you want to delete the user?") %></td>
+                  <td><%= link_to('delete', destroy_multiple_users_path(:id => user.id, :user_ids => [user.id]), :method => 'delete', :confirm => "Are you sure you want to delete the user?") %></td>
                 <% end %>
               </tr>
             </tbody>

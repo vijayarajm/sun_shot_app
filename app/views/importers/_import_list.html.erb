@@ -1,4 +1,5 @@
 <% if @imports.present? %>
+  <br><br><br><br>
   <table class ="table table-striped table-hover">
     <thead>
       <tr>
@@ -17,8 +18,8 @@
             <td><%= import.uploaded_at %></td>
             <td><%= import.user ? import.user.username : "N/A" %></td>
             <td>
-              <span class="<%= "tag #{Importer::STATUS.invert[import.status]}" %>">
-                <%= Importer::STATUS.invert[import.status].to_s.tr("_", " ").capitalize %>
+              <span class="<%= "tag #{Import::STATUS.invert[import.status]}" %>">
+                <%= Import::STATUS.invert[import.status].to_s.tr("_", " ").capitalize %>
               </span>
             </td>
             <td><%= import.error_msg ? import.error_msg.to_s : "-" %></td>
@@ -28,6 +29,6 @@
   </table>
   <%= will_paginate @imports %>
 <% else %>
-  <br><br><br>
+  <br><br><br><br><br><br>
   <p>No import jobs so far.</p>
 <% end %>

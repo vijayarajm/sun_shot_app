@@ -5,6 +5,8 @@ namespace :populate_default_data do
     role = Role.create(:name => "Admin", :description => "Has all privileges")
     user = User.create(user_data)
     user.roles = [role]
+
+    puts "All done! You can now login to the admin portal with the username - admin and password - admin.\n\n"
   end  
 
   def user_data

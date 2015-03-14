@@ -1,9 +1,9 @@
 class CreateRoles < ActiveRecord::Migration
   def up
     create_table :roles do |t|
-      t.string :name
-      t.string :description
-      t.string :parent
+      t.string :name, :null => false
+      t.string :description, :null => false
+      t.string :parent, :null => false
 
       t.timestamps
     end

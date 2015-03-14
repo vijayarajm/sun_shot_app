@@ -23,6 +23,7 @@ SunShotApp::Application.routes.draw do
 
   resources :users do
     collection do
+      get 'check_for_username'
       delete 'destroy_multiple'
     end
   end 
@@ -86,5 +87,4 @@ SunShotApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  mount WillFilter::Engine => "/will_filter"
 end

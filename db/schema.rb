@@ -11,25 +11,40 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150306095907) do
+ActiveRecord::Schema.define(:version => 20150313192947) do
 
-  create_table "location_data", :force => true do |t|
-    t.integer  "location_id"
-    t.datetime "date_time"
-    t.string   "instantaneous_power"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
-  end
-
-  create_table "locations", :force => true do |t|
-    t.string   "unique_id"
-    t.string   "name"
-    t.string   "address"
-    t.string   "maximum_output"
-    t.string   "lat"
-    t.string   "long"
+  create_table "imports", :force => true do |t|
+    t.integer  "status",         :null => false
+    t.string   "file_name",      :null => false
+    t.string   "directory_name", :null => false
+    t.text     "error_msg"
+    t.datetime "uploaded_at",    :null => false
+    t.integer  "user_id",        :null => false
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  add_index "imports", ["user_id"], :name => "imports_user_id_fk"
+
+  create_table "location_data", :force => true do |t|
+    t.integer  "location_id",                                                       :null => false
+    t.integer  "date_time",                                                         :null => false
+    t.decimal  "instantaneous_power", :precision => 10, :scale => 0, :default => 0, :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
+  end
+
+  add_index "location_data", ["location_id"], :name => "location_data_location_id_fk"
+
+  create_table "locations", :force => true do |t|
+    t.string   "unique_id",                                                    :null => false
+    t.string   "name",                                                         :null => false
+    t.string   "address",                                                      :null => false
+    t.string   "maximum_output",                                               :null => false
+    t.decimal  "lat",            :precision => 10, :scale => 0, :default => 0, :null => false
+    t.decimal  "long",           :precision => 10, :scale => 0, :default => 0, :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
   end
 
   create_table "roles", :force => true do |t|
@@ -41,35 +56,31 @@ ActiveRecord::Schema.define(:version => 20150306095907) do
   end
 
   create_table "user_roles", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer "user_id", :null => false
+    t.integer "role_id", :null => false
   end
 
+  add_index "user_roles", ["role_id"], :name => "user_roles_role_id_fk"
+  add_index "user_roles", ["user_id"], :name => "user_roles_user_id_fk"
+
   create_table "users", :force => true do |t|
-    t.string   "username"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "crypted_password"
-    t.string   "password_salt"
-    t.string   "perishable_token"
-    t.string   "persistence_token"
+    t.string   "username",          :null => false
+    t.string   "first_name",        :null => false
+    t.string   "last_name",         :null => false
+    t.string   "email",             :null => false
+    t.string   "crypted_password",  :null => false
+    t.string   "password_salt",     :null => false
+    t.string   "perishable_token",  :null => false
+    t.string   "persistence_token", :null => false
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
 
-  create_table "will_filter_filters", :force => true do |t|
-    t.string   "type"
-    t.string   "name"
-    t.text     "data"
-    t.integer  "user_id"
-    t.string   "model_class_name"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
+  add_foreign_key "imports", "users", name: "imports_user_id_fk"
 
-  add_index "will_filter_filters", ["user_id"], :name => "index_will_filter_filters_on_user_id"
+  add_foreign_key "location_data", "locations", name: "location_data_location_id_fk"
+
+  add_foreign_key "user_roles", "roles", name: "user_roles_role_id_fk"
+  add_foreign_key "user_roles", "users", name: "user_roles_user_id_fk"
 
 end

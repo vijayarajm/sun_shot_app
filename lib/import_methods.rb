@@ -26,7 +26,7 @@ module ImportMethods
           add_import_job(entry_file_name, directory_name, Time.at(timestamp))
         end
       end
-      import_data unless Importer.find_by_status(Importer::STATUS[:in_progress])
+      import_data unless Import.find_by_status(Import::STATUS[:in_progress])
     end
   end
 
@@ -35,8 +35,8 @@ module ImportMethods
   # Creating the import job with the file name and directory name
 
   def add_import_job(file_name, directory_name, uploaded)
-    Importer.create(:file_name => file_name, :directory_name => directory_name, :uploaded_at => uploaded, 
-      :status => Importer::STATUS[:pending], :user_id => current_user.id)
+    Import.create(:file_name => file_name, :directory_name => directory_name, :uploaded_at => uploaded, 
+      :status => Import::STATUS[:pending], :user_id => current_user.id)
   end
 
   # import_data
@@ -45,7 +45,7 @@ module ImportMethods
   # This method is recursively called to check and run if there is any pending import.
 
   def import_data
-    pending_import = Importer.find_by_status(Importer::STATUS[:pending])
+    pending_import = Import.find_by_status(Import::STATUS[:pending])
     return if pending_import.blank?
 
     Thread.new{      
@@ -63,13 +63,14 @@ module ImportMethods
   # Removes location entries that are not in the metadata.csv file.
 
   def read_metadata_csv(directory_name)
-    import = Importer.find_by_directory_name_and_file_name(directory_name, METADATA_FILE)
+    import = Import.find_by_directory_name_and_file_name(directory_name, METADATA_FILE)
     locations_in_csv = []
     update_status(import, :in_progress)
     CSV.foreach(%(#{directory_name}/#{METADATA_FILE}), headers: true) do |row|
       begin
         locations_in_csv << row[0]
         location = Location.find_or_create_by_unique_id(row[0])
+        p location
         location.update_attributes(:maximum_output => row[1], :lat => row[2], :long => row[3])
         update_status(import, :success)
       rescue Exception => e
@@ -95,7 +96,7 @@ module ImportMethods
   # If location not found for a CSV file, it is updated with failed status and not_found error msg.
 
   def read_other_csvs(directory_name)
-    Importer.find_all_by_directory_name(directory_name).each do |import|      
+    Import.find_all_by_directory_name(directory_name).each do |import|      
       if !import.file_name.eql?(METADATA_FILE) 
         update_status(import, :in_progress)
         unique_id = import.file_name.split(".csv")[0]
@@ -121,7 +122,7 @@ module ImportMethods
   # Updates status of import files
 
   def update_status(import, status, error_msg = nil)
-    import.update_attributes(:status => Importer::STATUS[status], :error_msg => error_msg)
+    import.update_attributes(:status => Import::STATUS[status], :error_msg => error_msg)
   end
 
   def valid_csv?(entry)

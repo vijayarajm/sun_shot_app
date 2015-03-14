@@ -10,9 +10,9 @@ module ApplicationHelper
 
   def nav_tab_list
     [ 
-      [ "Locations", :locations, locations_path],
-      [ "Users", :users, users_path],
-      [ "Importers", :importers, importers_path],
+      ["Locations", :locations, locations_path],
+      ["Users", :users, users_path],
+      ["Importers", :importers, importers_path],
     ]
   end
   

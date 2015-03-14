@@ -14,7 +14,7 @@
             <%= form.text_field :date_time, { :class => "span3 select2 required", :placeholder => "Unique ID", :required => true } %><br>
           
             <label>Instantaneous power (in watts)</label>
-            <%= form.text_field :instantaneous_power, { :class => "span3 select2", :placeholder => "Name", :required => true } %><br><br>            
+            <%= form.number_field :instantaneous_power, { :class => "span3 select2", :placeholder => "Name", :required => true, :step => "any" } %><br><br>            
             
             <%= form.submit "Update", :class => "span2 btn btn-small btn-primary" %> 
           </div>

@@ -8,13 +8,14 @@
       </div>            
       
       <div class="modal-body" id="utility_body">  
-        <%= form_tag :url => users_path, :method => :post, :html => { :class => "hide", :id => "lead_status_edit" } do |form| %>
+        <%= form_tag users_path, { :method => :post, :id => "new_user_form" } do |form| %>
           
           <div class="span6">            
-            <%= text_field_tag "user[username]", "", { :class => "span3 select2 pull-left", :placeholder => "Username", :required => true } %>
+            <div id="username_error_message"></div>
+            <%= text_field_tag "user[username]", "", { :class => "span3 select2 pull-left", :placeholder => "Username", :required => true, :id => "username_field" } %>
             <%= text_field_tag "user[first_name]", "", { :class => "span3 select2 pull-right", :placeholder => "First Name", :required => true } %><br>
             <%= text_field_tag "user[last_name]", "", { :class => "span3 select2 pull-left", :placeholder => "Last Name", :required => true } %>
-            <%= text_field_tag "user[email]", "", { :class => "span3 select2 pull-right", :placeholder => "Email", :required => true } %><br>
+            <%= email_field_tag "user[email]", "", { :class => "span3 select2 pull-right", :placeholder => "Email", :required => true } %><br>
             <%= password_field_tag "user[password]", "", { :class => "span3 select2 pull-left", :placeholder => "Password", :required => true } %><br><br>
             
             <%= label_tag "Choose roles for the user" %><br>
@@ -22,10 +23,35 @@
               <%= check_box_tag "user[role_ids][]", role.id, false %> <%= " #{role.name} - #{role.description}" %><br><br>
             <% end %>
             <br><br><br>
-            <%= submit_tag "Create", :class => "span2 btn btn-small btn-primary" %> 
+            <%= submit_tag "Create", :class => "span2 btn btn-small btn-primary", :id => "new_user_submit", :disabled => :disabled %> 
           </div>
         <% end %> 
       </div>
     </div>
   </div>
 </div>
+
+<script>
+
+  $(document).ready(function(){
+    $('#username_field').focusout(function(){
+        var data = $(new_user_form).serialize();
+        var url = "/users/check_for_username?&callback=?";
+        $.getJSON(url, data, function(response) { 
+          usernameResponse(response) 
+        });
+    });
+  });  
+
+  function usernameResponse(response){
+    if(response["available"]){
+      $('#username_error_message')[0].innerHTML = "Username is not available!<br><br>"; 
+      $("#new_user_submit")[0].disabled = true;
+    }
+    else{ 
+      $('#username_error_message')[0].innerHTML = "";     
+      $("#new_user_submit")[0].disabled = false;
+    }
+  } 
+</script>
+

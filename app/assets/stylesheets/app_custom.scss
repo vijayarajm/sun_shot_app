@@ -10,7 +10,10 @@ body{
 }
 
 .container{
-  width: 1040px;
+  width: auto;
+  margin: 0px auto;
+  margin-left: 50px;
+  margin-right: 50px
 }
 
 li, ol, ul{
@@ -104,8 +107,6 @@ header{
     li{
       float: left;
       height: 58px;
-      border-left: 1px #d3d2d3 solid;
-      border-right: 1px #d3d2d3 solid;
       &:hover{
         background-color: #f1eeee;
       }
@@ -344,6 +345,10 @@ nav{
   vertical-align: middle;
   padding-top: 10px;
   display: inline-block;
+}
+.table{
+  max-width: 1500px;
+  min-width: 100px;
 }
 .table th{
   padding: 8px;

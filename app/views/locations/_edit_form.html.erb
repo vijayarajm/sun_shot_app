@@ -13,9 +13,9 @@
             <%= form.text_field :unique_id, { :class => "span3 select2 pull-left required", :placeholder => "Unique ID", :required => true } %>
             <%= form.text_field :name, { :class => "span3 select2 pull-right", :placeholder => "Name", :required => true } %><br>
             <%= form.text_field :address, { :class => "span3 select2", :placeholder => "Address", :required => true } %> 
-            <%= form.text_field :maximum_output, { :class => "span3 select2 pull-right", :placeholder => "Maximum Output", :required => true } %><br>
-            <%= form.text_field :lat, { :class => "span3 select2", :placeholder => "Latitude", :required => true } %>
-            <%= form.text_field :long, { :class => "span3 select2 pull-right", :placeholder => "Longitude", :required => true } %><br><br>
+            <%= form.text_field :maximum_output, { :class => "span3 select2 pull-right", :placeholder => "Maximum Output", :required => true, :step => "any" } %><br>
+            <%= form.number_field :lat, { :class => "span3 select2", :placeholder => "Latitude", :required => true, :step => "any" } %>
+            <%= form.number_field :long, { :class => "span3 select2 pull-right", :placeholder => "Longitude", :required => true } %><br><br>
             <%= form.submit "Update", :class => "span2 btn btn-small btn-primary" %> 
           </div>
         <% end %> 

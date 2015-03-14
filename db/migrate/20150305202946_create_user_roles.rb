@@ -1,10 +1,8 @@
 class CreateUserRoles < ActiveRecord::Migration
   def up
     create_table :user_roles do |t|
-      t.integer :user_id
-      t.integer :role_id
-
-      t.timestamps
+      t.integer :user_id, :null => false
+      t.integer :role_id, :null => false
     end
   end
 

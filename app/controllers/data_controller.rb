@@ -28,7 +28,7 @@ class DataController < ApplicationController
       flash[:notice] = "Location data created!"
       redirect_to location_data_path
     else
-      flash[:notice] = @location_data.errors.full_messages.to_sentence
+      flash[:notice] = @location_data.errors.full_messages.uniq.to_sentence
       redirect_to location_data_path
     end
   end
@@ -44,7 +44,7 @@ class DataController < ApplicationController
       flash[:notice] = "Location data updated!"
       redirect_to location_data_path
     else
-      flash[:notice] = @location_data.errors.full_messages.to_sentence
+      flash[:notice] = @location_data.errors.full_messages.uniq.to_sentence
       redirect_to location_data_path
     end
   end
@@ -53,19 +53,11 @@ class DataController < ApplicationController
     @location_data = scoper.data.paginate(:page => params[:page], :per_page => 30)
   end
 
-  def destroy
-    locations = scoper.data.where(:id => params[:location_data_ids])
-    locations.destroy_all
-
-    flash[:notice] = "Location destroyed!"
-    redirect_to location_data_path
-  end
-
   def destroy_multiple
     locations = scoper.data.where(:id => params[:location_data_ids])
     locations.destroy_all
 
-    flash[:notice] = "Locations deleted!"
+    flash[:notice] = "Location data deleted!"
     redirect_to location_data_path
   end
 

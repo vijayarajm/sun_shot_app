@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       flash[:notice] = "User created!"
       redirect_to users_path
     else
-      flash[:error] = @user.errors.full_messages.to_sentence
+      flash[:error] = @user.errors.full_messages.uniq.to_sentence      
       redirect_to users_path
     end
   end
@@ -41,13 +41,13 @@ class UsersController < ApplicationController
       flash[:notice] = "User updated!"
       redirect_to users_path
     else
-      flash[:error] = @user.errors.full_messages.to_sentence
+      flash[:error] = @user.errors.full_messages.uniq.to_sentence
       redirect_to users_path
     end
   end
 
   def index
-    if params[:filter_param]
+    if params[:filter_param].present? and params[:filter_value].present?
       users = User.where("#{params[:filter_param]} = '#{params[:filter_value]}'")
       @users = users.paginate(:page => params[:page], :per_page => 30)
     else
@@ -55,20 +55,17 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy
-    users = User.where(:id => params[:user_ids])
-    users.destroy_all
-
-    flash[:notice] = "User deleted!"
-    redirect_to users_path
-  end
-
   def destroy_multiple
     users = User.where(:id => params[:user_ids])
     users.destroy_all
 
-    flash[:notice] = "Users deleted!"
+    flash[:notice] = (users.count > 1 ? "Users deleted!" : "User deleted!")
     redirect_to users_path
+  end
+
+  def check_for_username
+    user = User.find_by_username(params[:user][:username])
+    render :json => { :available => user.present? }, :callback => params[:callback]
   end
 
   private
