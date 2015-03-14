@@ -1,3 +1,11 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This controller takes care of import - validation, spanning threads for import proces and updating 
+# status.
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 require 'import_methods.rb'
 
 class ImportersController < ApplicationController

@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This file has helper methods to build, format data displayed in the UI.
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 module LocationsHelper
   
   # Helper method to build location filter options

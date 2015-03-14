@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This controller has CRUD methods to perform actions on locations
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 class LocationsController < ApplicationController
 
   # index: GET /locations - renders the locations page. Lists all locations

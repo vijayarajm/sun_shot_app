@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This file has helpder methods to build user filter options and roles
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 module UsersHelper
   
   # Helper method to build user filter options and roles

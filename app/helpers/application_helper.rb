@@ -1,5 +1,13 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This file has helper methods to build, format data displayed in the UI.
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 module ApplicationHelper
   
+  # This method checks if the user is signed in with the presence of current_user.
   def signed_in?
     !current_user.nil?
   end

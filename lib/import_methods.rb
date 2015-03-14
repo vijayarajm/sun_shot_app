@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This file includes the worker methods that carries on the import of data to the database.
+#
+# Author TCSASSEMBLER
+# Version 1.0
+
 require 'csv'
 
 module ImportMethods

@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This controller has CRUD methods to perform actions on location_data
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 class DataController < ApplicationController
 
   before_filter :deny_access, :check_for_location

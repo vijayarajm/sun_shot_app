@@ -1,3 +1,10 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This controller has CRUD methods to perform actions on users.
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 class UsersController < ApplicationController
 
   # GET /users - render users page. Lists all users - with pagination and filters.

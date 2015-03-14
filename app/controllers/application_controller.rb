@@ -1,19 +1,27 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# Uses Authlogic to manage user sessions.
+# 
+# Methods to check for session and to set the current_user if current_user_session are available. 
+#
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   helper_method :current_user
   protect_from_forgery
-  
-  # Uses Authlogic to manage user sessions.
-  # 
-  # Methods to check for session and to set the current_user if current_user_session are available. 
-  # 
-  # 'require_no_user' used in login_controller to make sure only usrs with no session can access /login.
-  # 
-  # 'deny_access' used in all controllers which requires users to be logged in for an action to be performed.
-  # 
-  # 'store_location' and 'redirect_back_or_default' are used to support redirection in logins.
 
   before_filter :set_cache_buster
+
+  # 'set_cache_buster' used to restrict caching of webpages, and prevents webpage loading 
+  # from cache when a session is cleared/logged.
+  #
+  # 'require_no_user' used in login_controller to make sure only usrs with no session can access /login.
+  #
+  # 'deny_access' used in all controllers which requires users to be logged in for an action to be performed.
+  #
+  # 'store_location' and 'redirect_back_or_default' are used to support redirection in logins.
 
   def set_cache_buster
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"

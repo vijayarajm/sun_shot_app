@@ -1,7 +1,7 @@
 <div class="container mtop">
   
   <div class="pull-right span3">
-    <a id="create-location-popup" class="modal-box btn btn-primary" data-backdrop="static" data-toggle="modal" href="#create_location_data"> Create location data</a>
+    <a id="create-location-popup" class="modal-box btn btn-primary" data-backdrop="static" data-toggle="modal" href="#create_location_data"> Create new</a>
 
     <%= form_tag destroy_multiple_location_data_path, :method => :delete, :class => "delete_multiple_location_data pull-right" do %>
       <%= button_to_function('Delete selected', "delete_data()", :class => "btn btn-danger", :id => "delete-multi-btn", :confirm => "Are you sure you want to delete the selected location data?", :disabled => "disabled") %>

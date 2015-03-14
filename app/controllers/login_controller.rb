@@ -1,10 +1,19 @@
+# Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
+# 
+# This controller is used for creating and destroying sessions.
+#
+# Author: TCSASSEMBLER
+# Version: 1.0
+
 class LoginController < ApplicationController
   before_filter :require_no_user, :only => [ :new, :create ]
   before_filter :check_for_blank, :only => :create
   
   # Methods to create/destroy user_sessions.
   # 
-  # /login supports redirect param in the URL (/login?redirect=<redirect_url>)
+  # /login (create) supports redirect param in the URL (/login?redirect=<redirect_url>)
+  # 
+  # /logout (destroy) - for clearing the sessions.
 
   def new
     @user_session = UserSession.new
