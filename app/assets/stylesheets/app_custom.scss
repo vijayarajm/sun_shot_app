@@ -406,3 +406,9 @@ nav{
   -webkit-background-size: 40px 40px;
   background-size: 40px 40px;
 }
+
+@-moz-document url-prefix() {
+  table {
+      margin-top: 50px;
+  }
+}
