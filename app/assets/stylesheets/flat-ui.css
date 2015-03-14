@@ -4767,7 +4767,7 @@ input.search-query {
 }
 @media (max-width: 767px) {
   .table {
-    display: none;
+    display: block;
   }
   .rwd-table {
     display: block;
