@@ -80,7 +80,7 @@ class ImportersController < ApplicationController
           files_in_zip << entry.name.split('/').last
           if entry.name.include?("metadata.csv")             
             content = entry.get_input_stream.read
-            content.split("\r").each_with_index do |row, index|
+            content.split("\r\n").each_with_index do |row, index|
               locations << row.split(",")[0] unless index == 0              
             end
           end
