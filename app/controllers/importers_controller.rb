@@ -13,7 +13,11 @@ class ImportersController < ApplicationController
 
   # 'deny_access' to check if users are logged in.
   # 
-  # 'validate_zip' and 'check_for_metadata_csv' - to validate the ZIP file uploaded.
+  # 'validate_zip_format', 'remove_hidden_files' and 'validate_zip' - to validate the ZIP file uploaded.
+  # 'validate_zip_format' checks if the uploaded file is of the "ZIP" format.
+  # 'remove_hidden_files' removes all hidden files like .DS_Store,etc from the uploaded ZIP.
+  # 'validate_zip' checks if metadata.csv is present. Also, checks if all unique ids in metadata.csv 
+  #  has corresponding CSVs. 
   # 
   # GET /importers - Lists all import files uploaded with file_names, statuses and error_messages.
   # 
@@ -22,7 +26,7 @@ class ImportersController < ApplicationController
   # GET /importer/status - URL which updates the import status of all the files.
 
   before_filter :deny_access
-  before_filter :validate_zip, :check_for_metadata_csv, :remove_hidden_files, :only => :create
+  before_filter :validate_zip_format, :remove_hidden_files, :validate_zip, :only => :create
 
   def create
     add_zip(params[:ZIP])
@@ -41,7 +45,7 @@ class ImportersController < ApplicationController
   end
 
   private
-    def validate_zip      
+    def validate_zip_format
       unless File.extname(params[:ZIP].original_filename).eql?(".zip")
         flash[:error] = "Please upload only ZIP files."
         return redirect_to importers_path
@@ -55,18 +59,6 @@ class ImportersController < ApplicationController
       end
     end
 
-    def check_for_metadata_csv
-      files_in_zip = []
-      Zip::File.open(params[:ZIP].path) do |zip_file|
-        files_in_zip = zip_file.collect{ |entry| entry.name.split('/').last }
-      end
-
-      unless files_in_zip.include?(METADATA_FILE)
-        flash[:error] = "The metadata.csv file is not found in the ZIP file uploaded. Please check."
-        redirect_to importers_path
-      end
-    end
-
     def remove_hidden_files
       file = params[:ZIP].path
       Zip::ZipFile.open(file) do |zip_file|
@@ -75,6 +67,35 @@ class ImportersController < ApplicationController
           if f.name =~ /\.DS_Store|__MACOSX|(^|\/)\._/
             zip_file.remove(f.name)
           end
+        end
+      end
+    end
+
+    def validate_zip
+      files_in_zip =[]
+      locations = []
+
+      Zip::File.open(params[:ZIP].path) do |zip_file|
+        zip_file.each do |entry|           
+          files_in_zip << entry.name.split('/').last
+          if entry.name.include?("metadata.csv")             
+            content = entry.get_input_stream.read
+            content.split("\r").each_with_index do |row, index|
+              locations << row.split(",")[0] unless index == 0              
+            end
+          end
+        end
+      end
+
+      unless files_in_zip.include?(METADATA_FILE)
+        flash[:error] = "The metadata.csv file is not found in the ZIP file uploaded. Please check."
+        return redirect_to importers_path
+      end
+
+      locations.each do |location_unique_id|
+        unless files_in_zip.include?(%(#{location_unique_id}.csv))
+          flash[:error] = "Invalid ZIP. Each Unique ID in metadata.csv should have corresponding CSV file"
+          return redirect_to importers_path
         end
       end
     end
