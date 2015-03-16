@@ -37,6 +37,13 @@ This application forms the web admin portal to import and maintain Solar Retina 
 6. Execute the following command to run the application.
     ```"rails s -p <port_name>"```
 
+## Nginx issue when uploading larger files
+    When larger files (> 1 MB) are uploaded to the app, ```"413 Request Entity Too Large"``` error occurs. To fix this error, we'll have to edit the nginx configurtion. Please follow the steps below:
+    1. Open /etc/nginx/nginx.conf from the VM root with vi (or any editor).
+    2. Set the client_max_body_size to 50m (or with the max file size that will be uploaded).
+    3. Save the configuration with this command - ```:wq```
+    4. Restart nginx with this command - ```"service nginx reload"```
+
 
 ## Verification
 1. Login ```(/login)```

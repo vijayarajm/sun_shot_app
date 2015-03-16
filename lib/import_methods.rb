@@ -92,7 +92,11 @@ module ImportMethods
     locations_not_in_csv = Location.all.collect{ |l| l.unique_id } - locations_in_csv
     locations_not_in_csv.each do |location_unique_id|
       location = Location.find_by_unique_id(location_unique_id)
-      location.destroy if location
+      if location
+        delete_query = "DELETE FROM location_data where location_id = #{location.id}"
+        ActiveRecord::Base.connection.execute(delete_query)
+        location.destroy 
+      end
     end
   end
 

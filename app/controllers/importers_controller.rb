@@ -80,7 +80,7 @@ class ImportersController < ApplicationController
           files_in_zip << entry.name.split('/').last
           if entry.name.include?("metadata.csv")             
             content = entry.get_input_stream.read
-            content.split("\r\n").each_with_index do |row, index|
+            content.split("\r").each_with_index do |row, index|
               locations << row.split(",")[0] unless index == 0              
             end
           end
@@ -91,9 +91,11 @@ class ImportersController < ApplicationController
         flash[:error] = "The metadata.csv file is not found in the ZIP file uploaded. Please check."
         return redirect_to importers_path
       end
-
+      
+      locations = locations.collect{ |l| l.strip }.compact
       locations.each do |location_unique_id|
-        unless files_in_zip.include?(%(#{location_unique_id}.csv))
+        if location_unique_id.present? and !files_in_zip.include?(%(#{location_unique_id.strip}.csv))
+          p location_unique_id
           flash[:error] = "Invalid ZIP. Each Unique ID in metadata.csv should have corresponding CSV file"
           return redirect_to importers_path
         end
