@@ -1,7 +1,7 @@
 ## Overview
 The Solar Retina is a software platform that provides real-time intelligence of total “behind-the-meter” solar PV (Photovoltaics) generation on the distribution system. Using crowdsourced solar generation data from actual PVs on the distribution grid, software provides superior distributed solar generation analysis. 
 
-This application forms the web admin portal to import and maintain Solar Retina system data. Live demo can be seen in this link - http://ec2-54-173-33-253.compute-1.amazonaws.com/
+This application forms the admin portal to import and maintain Solar Retina system data. Live demo can be seen in this link - http://ec2-54-173-33-253.compute-1.amazonaws.com/
 
 
 ## Setup Prerequisites
